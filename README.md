@@ -24,7 +24,7 @@ Pandas, NumPy, Matplotlib
 **Usage**
 
 *Clone the repository:*
-bash\n
+bash
 Copy
 Edit
 git clone https://github.com/nishu-2004/House-Price-Prediction-using-XGBoost-Stacking.git
