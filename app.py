@@ -2,24 +2,18 @@ from flask import Flask, request, jsonify, render_template
 import joblib
 import pandas as pd
 import os
-
-# Print the templates folder path
 print("Templates Folder Path: ", os.path.join(os.getcwd(), 'templates'))
 
-# Load the model
 model = joblib.load('house_price_model.pkl')
 
-# Load the original data to extract feature columns
 from sklearn.datasets import fetch_california_housing
 california_housing = fetch_california_housing(as_frame=True)
 df = pd.DataFrame(california_housing.data, columns=california_housing.feature_names)
 df['MedHouseVal'] = california_housing.target
 
-# Columns to remove (matching the training preprocessing step)
 columns_to_remove = ['AveBedrms', 'Longitude']
-X_columns = df.drop(columns=columns_to_remove).drop(columns='MedHouseVal').columns  # Features used during training
+X_columns = df.drop(columns=columns_to_remove).drop(columns='MedHouseVal').columns  
 
-# Initialize Flask app
 app = Flask(__name__)
 
 @app.route('/')
@@ -39,13 +33,10 @@ def predict():
             float(request.form['Latitude'])
         ]
 
-        # Convert the input data into a pandas DataFrame with the correct column names
         input_data = pd.DataFrame([feature_values], columns=X_columns)
 
-        # Make the prediction
         prediction = model.predict(input_data)
 
-        # Return the prediction as a response
         return f"Predicted House Price: ${prediction[0]:.2f}"
 
     except Exception as e:
